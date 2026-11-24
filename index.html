@@ -1,0 +1,2011 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My AI Text To Illustration and Design</title>
+  <!-- Tailwind CSS CDN for responsive studio grid & utilities -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            studio: {
+              bg: '#06080f',
+              panel: '#0d1220',
+              card: '#131a2e',
+              border: '#1e2947',
+              cyan: '#00f5d4',
+              magenta: '#ff2a85',
+              violet: '#8b5cf6',
+            }
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* ==========================================================================
+       CUSTOM STUDIO CSS & NEON GLOW TRANSITIONS
+       ========================================================================== */
+    :root {
+      --neon-cyan: #00f5d4;
+      --neon-magenta: #ff2a85;
+      --neon-violet: #8b5cf6;
+      --bg-deep: #06080f;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg-deep);
+      background-image:
+        radial-gradient(circle at 15% 15%, rgba(139, 92, 246, 0.12), transparent 35%),
+        radial-gradient(circle at 85% 80%, rgba(0, 245, 212, 0.10), transparent 38%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 32px 32px, 32px 32px;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* 2-Second Smooth Ease Hover Transitions on Title Buttons & Interactive Cards */
+    .studio-title-btn {
+      position: relative;
+      background: linear-gradient(135deg, rgba(19, 26, 46, 0.95), rgba(13, 18, 32, 0.95));
+      border: 1px solid rgba(0, 245, 212, 0.28);
+      box-shadow: 0 0 18px rgba(0, 245, 212, 0.12), inset 0 0 12px rgba(139, 92, 246, 0.12);
+      transition: all 2s ease;
+    }
+
+    .studio-title-btn:hover {
+      border-color: rgba(255, 42, 133, 0.85);
+      box-shadow:
+        0 0 32px rgba(0, 245, 212, 0.45),
+        0 0 54px rgba(255, 42, 133, 0.35),
+        inset 0 0 22px rgba(0, 245, 212, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .neon-card {
+      background: rgba(13, 18, 32, 0.86);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(30, 41, 71, 0.95);
+      transition: border-color 2s ease, box-shadow 2s ease, transform 2s ease;
+    }
+
+    .neon-card:hover {
+      border-color: rgba(139, 92, 246, 0.55);
+      box-shadow: 0 10px 35px -10px rgba(0, 245, 212, 0.18), 0 0 24px rgba(139, 92, 246, 0.14);
+    }
+
+    /* Primary Generate CTA Button */
+    .generate-btn {
+      background: linear-gradient(135deg, #00f5d4 0%, #8b5cf6 52%, #ff2a85 100%);
+      background-size: 200% 200%;
+      color: #05070e;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: 0 0 24px rgba(0, 245, 212, 0.35);
+      transition: all 2s ease;
+    }
+
+    .generate-btn:hover {
+      background-position: 100% 50%;
+      box-shadow: 0 0 36px rgba(255, 42, 133, 0.6), 0 0 20px rgba(0, 245, 212, 0.5);
+      transform: translateY(-1px) scale(1.01);
+    }
+
+    .generate-btn:active {
+      transform: scale(0.98);
+      transition: transform 0.15s ease;
+    }
+
+    /* Style Chip Transitions */
+    .style-chip {
+      border: 1px solid #1e2947;
+      background: rgba(19, 26, 46, 0.7);
+      transition: all 0.35s ease;
+    }
+
+    .style-chip:hover {
+      border-color: rgba(0, 245, 212, 0.5);
+      background: rgba(25, 35, 62, 0.95);
+    }
+
+    .style-chip.active {
+      border-color: #00f5d4;
+      background: linear-gradient(135deg, rgba(0, 245, 212, 0.18), rgba(139, 92, 246, 0.22));
+      box-shadow: 0 0 16px rgba(0, 245, 212, 0.25);
+      color: #ffffff;
+    }
+
+    /* Cross-Attention Interactive Token Chips */
+    .attention-token {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      cursor: pointer;
+      border: 1px solid rgba(139, 92, 246, 0.4);
+      background: rgba(19, 26, 46, 0.9);
+      transition: all 0.25s ease;
+      user-select: none;
+    }
+
+    .attention-token:hover,
+    .attention-token.highlighted {
+      border-color: #00f5d4;
+      background: rgba(0, 245, 212, 0.2);
+      color: #ffffff;
+      box-shadow: 0 0 14px rgba(0, 245, 212, 0.45);
+      transform: translateY(-1px);
+    }
+
+    /* Canvas Container & Checkerboard Transparency */
+    .canvas-stage {
+      background-color: #080b14;
+      background-image:
+        radial-gradient(circle at 50% 50%, rgba(139, 92, 246, 0.08), transparent 70%),
+        linear-gradient(45deg, #0c101d 25%, transparent 25%),
+        linear-gradient(-45deg, #0c101d 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #0c101d 75%),
+        linear-gradient(-45deg, transparent 75%, #0c101d 75%);
+      background-size: 100% 100%, 20px 20px, 20px 20px, 20px 20px, 20px 20px;
+      background-position: 0 0, 0 0, 0 10px, 10px -10px, -10px 0;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #06080f;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1e2947;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00f5d4;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.65; }
+      50% { opacity: 1; }
+    }
+    .animate-pulse-glow {
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-cyan-400 selection:text-slate-950">
+
+  <!-- ========================================================================
+       TOP NAVIGATION & STUDIO HEADER
+       ======================================================================== -->
+  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#06080f]/90 backdrop-blur-xl">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Logo & Interactive Title Button -->
+      <div class="flex items-center gap-3">
+        <button id="brandTitleBtn" type="button" class="studio-title-btn px-4 py-2 rounded-2xl flex items-center gap-3 text-left group cursor-pointer" title="Click to trigger Neural Demo Preset">
+          <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-400 via-violet-500 to-pink-500 p-[1.5px] shrink-0">
+            <div class="w-full h-full bg-[#090d18] rounded-[10px] flex items-center justify-center">
+              <svg class="w-5 h-5 text-cyan-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" />
+              </svg>
+            </div>
+          </div>
+          <div>
+            <h1 class="text-sm sm:text-base md:text-lg font-extrabold tracking-tight bg-gradient-to-r from-cyan-300 via-white to-pink-400 bg-clip-text text-transparent">
+              My AI Text To Illustration and Design
+            </h1>
+            <p class="text-[11px] text-slate-400 hidden sm:block">
+              Neural Diffusion Engine • Prompt Rewriter • Cross-Attention Visualizer
+            </p>
+          </div>
+        </button>
+      </div>
+
+      <!-- Studio Action Controls -->
+      <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Engine Mode Badge -->
+        <div id="engineModeBadge" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900/90 border border-cyan-500/30 text-xs font-mono text-cyan-300">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span id="engineModeText">Offline Neural Engine v3.0</span>
+        </div>
+
+        <!-- Audio Synth Toggle -->
+        <button id="audioToggleBtn" type="button" class="p-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-slate-300 hover:text-cyan-300 transition cursor-pointer" title="Toggle Web Audio Synth Feedback">
+          <svg id="audioOnIcon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+          </svg>
+          <svg id="audioOffIcon" class="w-4 h-4 hidden text-rose-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 9.75L19.5 12m0 0l2.25 2.25M19.5 12l2.25-2.25M19.5 12l-2.25 2.25m-10.5-6l4.72-4.72a.75.75 0 011.28.531V19.94a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.506-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.395C2.806 8.757 3.63 8.25 4.51 8.25H6.75z" />
+          </svg>
+        </button>
+
+        <!-- How AI Works Modal Trigger -->
+        <button id="openLearnModalBtn" type="button" class="px-3 py-2 rounded-xl bg-violet-500/15 hover:bg-violet-500/25 border border-violet-500/40 text-violet-200 text-xs sm:text-sm font-medium flex items-center gap-1.5 transition cursor-pointer">
+          <svg class="w-4 h-4 text-violet-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+          </svg>
+          <span>Paano Ito Gumagana?</span>
+        </button>
+
+        <!-- Optional Gemini API Key Drawer Trigger -->
+        <button id="openApiModalBtn" type="button" class="px-3 py-2 rounded-xl bg-cyan-500/15 hover:bg-cyan-500/25 border border-cyan-500/40 text-cyan-200 text-xs sm:text-sm font-medium flex items-center gap-1.5 transition cursor-pointer">
+          <svg class="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z" />
+          </svg>
+          <span class="hidden sm:inline">Connect Gemini API</span>
+          <span class="sm:hidden">API</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN 3-COLUMN STUDIO WORKSPACE
+       ======================================================================== -->
+  <main class="flex-1 max-w-[1600px] w-full mx-auto px-4 sm:px-6 py-5 grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+    <!-- ======================================================================
+         LEFT SIDEBAR: PROMPT CONTROLS, STYLES & DESIGN SPECS (4 Columns on LG)
+         ====================================================================== -->
+    <section class="lg:col-span-4 flex flex-col gap-4">
+      <div class="neon-card rounded-2xl p-4 sm:p-5 flex flex-col gap-4">
+        <div class="flex items-center justify-between">
+          <h2 class="text-sm font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            1. Text Prompt & Subject
+          </h2>
+          <button id="randomPromptBtn" type="button" class="text-xs text-pink-400 hover:text-pink-300 font-medium flex items-center gap-1 transition cursor-pointer">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
+            </svg>
+            Inspire Me
+          </button>
+        </div>
+
+        <!-- Prompt Textarea -->
+        <div class="relative">
+          <textarea
+            id="promptInput"
+            rows="3"
+            class="w-full rounded-xl bg-[#080c17] border border-slate-700/90 focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 p-3.5 text-sm text-white placeholder-slate-500 outline-none transition resize-none"
+            placeholder="I-type ang gusto mong illustration o design... Halimbawa: Cyberpunk Jeepney in Manila at night with neon lights"
+          >Cyberpunk Jeepney in Manila at night with glowing neon lights</textarea>
+          <div class="mt-1.5 flex items-center justify-between text-[11px] text-slate-400">
+            <span>Tip: Banggitin ang subject, kulay, at lugar para sa eksaktong layout.</span>
+            <span id="charCount" class="font-mono text-cyan-400">61 chars</span>
+          </div>
+        </div>
+
+        <!-- Quick Presets (English & Tagalog) -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-400 mb-2">Quick Studio Presets (EN / TL):</label>
+          <div class="flex flex-wrap gap-1.5" id="presetContainer">
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-cyan-500/20 border border-slate-700 hover:border-cyan-400/60 text-slate-200 transition cursor-pointer" data-prompt="Cyberpunk Jeepney in Manila at night with glowing neon lights" data-style="cyberpunk" data-title="MANILA 2099">
+              🚐 Cyberpunk Jeepney
+            </button>
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-pink-500/20 border border-slate-700 hover:border-pink-400/60 text-slate-200 transition cursor-pointer" data-prompt="Neon Samurai Cat with katana under sakura moon" data-style="vector" data-title="NEKO RONIN">
+              🐱 Neon Samurai Cat
+            </button>
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-violet-500/20 border border-slate-700 hover:border-violet-400/60 text-slate-200 transition cursor-pointer" data-prompt="Minimalist Geometric Diamond Logo with gold and cyan gradients" data-style="logo" data-title="AETHER STUDIO">
+              💎 Geometric Logo
+            </button>
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-emerald-500/20 border border-slate-700 hover:border-emerald-400/60 text-slate-200 transition cursor-pointer" data-prompt="Fantasy Floating Island with waterfall and glowing crystal temple" data-style="watercolor" data-title="SKY SANCTUARY">
+              🏝️ Floating Island
+            </button>
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-amber-500/20 border border-slate-700 hover:border-amber-400/60 text-slate-200 transition cursor-pointer" data-prompt="Isometric Futuristic Coffee Shop with holographic menu and plants" data-style="isometric" data-title="CYBER CAFE">
+              ☕ 3D Isometric Cafe
+            </button>
+            <button type="button" class="preset-btn text-xs px-2.5 py-1.5 rounded-lg bg-slate-800/90 hover:bg-indigo-500/20 border border-slate-700 hover:border-indigo-400/60 text-slate-200 transition cursor-pointer" data-prompt="Retro Pixel Art Spaceship flying over purple synthwave mountains" data-style="pixel" data-title="STAR DRIVE">
+              👾 Pixel Synthwave
+            </button>
+          </div>
+        </div>
+
+        <!-- Illustration & Design Style Grid -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-violet-300 mb-2">
+            2. Illustration & Design Style
+          </label>
+          <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 gap-2" id="styleSelector">
+            <button type="button" class="style-chip active p-2.5 rounded-xl text-left cursor-pointer" data-style="cyberpunk">
+              <div class="text-xs font-bold text-cyan-300">⚡ Neon Cyberpunk</div>
+              <div class="text-[10px] text-slate-400">Glows, rim-light, night</div>
+            </button>
+            <button type="button" class="style-chip p-2.5 rounded-xl text-left cursor-pointer" data-style="vector">
+              <div class="text-xs font-bold text-pink-300">✒️ Vector Illustration</div>
+              <div class="text-[10px] text-slate-400">Crisp shapes, bold lines</div>
+            </button>
+            <button type="button" class="style-chip p-2.5 rounded-xl text-left cursor-pointer" data-style="logo">
+              <div class="text-xs font-bold text-violet-300">📐 Minimalist Logo/UI</div>
+              <div class="text-[10px] text-slate-400">Symmetry, brand badge</div>
+            </button>
+            <button type="button" class="style-chip p-2.5 rounded-xl text-left cursor-pointer" data-style="watercolor">
+              <div class="text-xs font-bold text-emerald-300">🎨 Watercolor Art</div>
+              <div class="text-[10px] text-slate-400">Soft washes, organic</div>
+            </button>
+            <button type="button" class="style-chip p-2.5 rounded-xl text-left cursor-pointer" data-style="isometric">
+              <div class="text-xs font-bold text-amber-300">🧊 3D Isometric</div>
+              <div class="text-[10px] text-slate-400">Architectural depth</div>
+            </button>
+            <button type="button" class="style-chip p-2.5 rounded-xl text-left cursor-pointer" data-style="pixel">
+              <div class="text-xs font-bold text-indigo-300">🕹️ Pixel / Retro Art</div>
+              <div class="text-[10px] text-slate-400">16-bit grid aesthetic</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Aspect Ratio, Color Palette & Typography Overlay -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+          <!-- Aspect Ratio -->
+          <div>
+            <label class="block text-xs font-semibold text-slate-400 mb-1.5">Aspect Ratio</label>
+            <div class="grid grid-cols-3 gap-1.5" id="aspectSelector">
+              <button type="button" class="aspect-btn active py-1.5 px-2 rounded-lg text-xs font-mono border border-cyan-400 bg-cyan-500/20 text-white cursor-pointer" data-aspect="1:1">1:1</button>
+              <button type="button" class="aspect-btn py-1.5 px-2 rounded-lg text-xs font-mono border border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-500 cursor-pointer" data-aspect="16:9">16:9</button>
+              <button type="button" class="aspect-btn py-1.5 px-2 rounded-lg text-xs font-mono border border-slate-700 bg-slate-900 text-slate-300 hover:border-slate-500 cursor-pointer" data-aspect="9:16">9:16</button>
+            </div>
+          </div>
+
+          <!-- Palette Override -->
+          <div>
+            <label for="paletteSelect" class="block text-xs font-semibold text-slate-400 mb-1.5">Color Palette</label>
+            <select id="paletteSelect" class="w-full py-1.5 px-2.5 rounded-lg text-xs bg-[#080c17] border border-slate-700 text-slate-200 focus:border-cyan-400 outline-none cursor-pointer">
+              <option value="auto">✨ Auto-Detect from Prompt</option>
+              <option value="cyber">💠 Cyber Cyan & Magenta</option>
+              <option value="sunset">🌅 Manila Sunset Gold</option>
+              <option value="emerald">🌿 Bio-Luminescent Emerald</option>
+              <option value="royal">👑 Royal Violet & Amber</option>
+              <option value="mono">⚪ Monochrome Studio</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Optional Graphic Design Title Overlay -->
+        <div>
+          <label for="designTitleInput" class="block text-xs font-semibold text-slate-400 mb-1">
+            Graphic Design Typography Overlay (Optional)
+          </label>
+          <input
+            id="designTitleInput"
+            type="text"
+            maxlength="28"
+            value="MANILA 2099"
+            placeholder="e.g., STUDIO BRAND, POSTER TITLE..."
+            class="w-full rounded-xl bg-[#080c17] border border-slate-700/90 focus:border-pink-400 px-3 py-2 text-xs font-mono text-white placeholder-slate-500 outline-none transition"
+          />
+        </div>
+
+        <!-- Primary Generate Action Button -->
+        <button id="generateBtn" type="button" class="generate-btn w-full py-3.5 px-5 rounded-2xl text-sm sm:text-base flex items-center justify-center gap-2.5 cursor-pointer mt-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+          </svg>
+          <span>Generate Illustration & Design</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         CENTER STAGE: LIVE AI ILLUSTRATION & DESIGN CANVAS (5 Columns on LG)
+         ====================================================================== -->
+    <section class="lg:col-span-5 flex flex-col gap-4">
+      <div class="neon-card rounded-2xl p-4 sm:p-5 flex flex-col gap-3 flex-1">
+        <!-- Canvas Header Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-2">
+            <span class="px-2.5 py-1 rounded-lg bg-pink-500/15 border border-pink-500/40 text-pink-300 text-xs font-mono font-semibold" id="canvasAspectBadge">
+              1:1 • 1024×1024
+            </span>
+            <span class="text-xs text-slate-400 font-mono" id="seedDisplay">SEED #84920</span>
+          </div>
+
+          <!-- Export Toolbar -->
+          <div class="flex items-center gap-2">
+            <button id="exportSpecsBtn" type="button" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600/80 text-xs font-medium text-slate-200 flex items-center gap-1.5 transition cursor-pointer" title="View Prompt & Pipeline JSON">
+              <svg class="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+              </svg>
+              <span>Specs</span>
+            </button>
+            <button id="downloadPngBtn" type="button" class="px-3.5 py-1.5 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/60 text-xs font-bold text-cyan-200 flex items-center gap-1.5 transition cursor-pointer">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+              </svg>
+              <span>Download PNG</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Step-by-Step Diffusion Progress Bar -->
+        <div class="bg-[#080c17] border border-slate-800 rounded-xl p-2.5">
+          <div class="flex items-center justify-between text-[11px] font-mono mb-1.5">
+            <span id="diffusionStageLabel" class="text-cyan-300 font-semibold">Stage 4/4: Final Illustration Rendered</span>
+            <span id="diffusionPercent" class="text-pink-400">100%</span>
+          </div>
+          <div class="w-full h-2 bg-slate-900 rounded-full overflow-hidden">
+            <div id="diffusionProgressBar" class="h-full w-full bg-gradient-to-r from-cyan-400 via-violet-500 to-pink-500 transition-all duration-150"></div>
+          </div>
+          <div class="grid grid-cols-4 gap-1 mt-1.5 text-[10px] font-mono text-slate-500 text-center">
+            <span id="step1Tag" class="text-cyan-300">1. Gaussian Noise</span>
+            <span id="step2Tag" class="text-cyan-300">2. Latent Layout</span>
+            <span id="step3Tag" class="text-cyan-300">3. Color & Light</span>
+            <span id="step4Tag" class="text-cyan-300">4. Crisp Details</span>
+          </div>
+        </div>
+
+        <!-- Interactive Canvas Viewport -->
+        <div id="canvasWrapper" class="canvas-stage relative flex-1 min-h-[340px] sm:min-h-[420px] rounded-2xl border border-slate-800/90 flex items-center justify-center p-3 overflow-hidden">
+          <canvas id="artCanvas" class="max-w-full max-h-[520px] rounded-xl shadow-2xl shadow-black/80 transition-all duration-300"></canvas>
+          <!-- Real API Image Overlay (shown only when real Gemini API image is returned) -->
+          <img id="apiResultImg" alt="Generated AI Illustration" class="hidden max-w-full max-h-[520px] rounded-xl shadow-2xl object-contain" />
+
+          <!-- Floating Cross-Attention Indicator Pill -->
+          <div id="attentionOverlayBadge" class="hidden absolute bottom-4 left-4 right-4 sm:right-auto bg-[#06080f]/90 backdrop-blur-md border border-cyan-400/70 px-3.5 py-2 rounded-xl text-xs font-mono text-cyan-200 shadow-lg pointer-events-none">
+            🎯 Cross-Attention Zone: <span id="attentionZoneName" class="font-bold text-white">Subject</span>
+          </div>
+        </div>
+
+        <!-- Quick Canvas Variations Bar -->
+        <div class="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-400 pt-1">
+          <span>Hover over words in the <strong class="text-cyan-300">Cross-Attention Inspector</strong> to see word-to-pixel mapping.</span>
+          <button id="rerollSeedBtn" type="button" class="text-violet-300 hover:text-cyan-300 font-mono underline underline-offset-4 cursor-pointer">
+            ↻ Re-roll Latent Seed
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         RIGHT SIDEBAR: UNDER-THE-HOOD AI PIPELINE VISUALIZER (3 Columns on LG)
+         ====================================================================== -->
+    <aside class="lg:col-span-3 flex flex-col gap-4">
+      <!-- Module A: Automatic Prompt Rewriter -->
+      <div class="neon-card rounded-2xl p-4 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1.5">
+            <span>🧠</span> 1. LLM Prompt Rewriter
+          </h3>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-pink-500/15 text-pink-300">Auto-Expanded</span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          Tulad ng <strong class="text-slate-200">Gemini</strong> at <strong class="text-slate-200">ChatGPT</strong>, pinapalawak muna ng LLM ang maikling prompt bago iguhit:
+        </p>
+        <div id="rewrittenPromptBox" class="p-3 rounded-xl bg-[#070a13] border border-slate-800 text-xs font-mono text-cyan-200/90 leading-relaxed max-h-40 overflow-y-auto">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <!-- Module B: Interactive Cross-Attention Inspector -->
+      <div class="neon-card rounded-2xl p-4 flex flex-col gap-2.5">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-cyan-300 flex items-center gap-1.5">
+            <span>🎯</span> 2. Cross-Attention Map
+          </h3>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-500/15 text-cyan-300">Interactive</span>
+        </div>
+        <p class="text-[11px] text-slate-400 leading-relaxed">
+          I-hover o i-tap ang bawat token sa ibaba para makita kung saang bahagi ng canvas naka-lock ang atensyon ng AI:
+        </p>
+        <div id="attentionTokensContainer" class="flex flex-wrap gap-1.5 pt-1">
+          <!-- Interactive Word Tokens Populated by JS -->
+        </div>
+        <div id="attentionExplanation" class="mt-1 p-2.5 rounded-xl bg-slate-900/90 border border-slate-800 text-[11px] text-slate-300">
+          Hover over any keyword token above to highlight its spatial bounding box on the illustration.
+        </div>
+      </div>
+
+      <!-- Module C: Detected Semantic Layers -->
+      <div class="neon-card rounded-2xl p-4 flex flex-col gap-2">
+        <h3 class="text-xs font-bold uppercase tracking-wider text-violet-300 flex items-center gap-1.5">
+          <span>🗂️</span> 3. Spatial Layer Decomposition
+        </h3>
+        <ul id="layerBreakdownList" class="space-y-1.5 text-xs font-mono text-slate-300">
+          <!-- Populated dynamically -->
+        </ul>
+      </div>
+    </aside>
+  </main>
+
+  <!-- ========================================================================
+       EDUCATIONAL SECTION: HOW AI TEXT-TO-IMAGE TOOLS WORK
+       ======================================================================== -->
+  <section class="max-w-[1600px] w-full mx-auto px-4 sm:px-6 pb-10">
+    <div class="neon-card rounded-2xl p-5 sm:p-7">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4 mb-5">
+        <div>
+          <span class="text-xs font-mono uppercase tracking-widest text-cyan-400">Architecture & Terminology</span>
+          <h2 class="text-lg sm:text-xl font-extrabold text-white mt-0.5">
+            Paano Ginagawa ng Google Gemini at ChatGPT ang Eksaktong Text-to-Image?
+          </h2>
+        </div>
+        <div class="flex flex-wrap gap-2 text-xs font-mono">
+          <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">Google Imagen 3 / Nano Banana</span>
+          <span class="px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 text-pink-300">OpenAI DALL-E 3 / GPT Image</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- Card 1 -->
+        <div class="p-4 rounded-xl bg-[#080c17] border border-slate-800/90 hover:border-cyan-500/50 transition">
+          <div class="w-9 h-9 rounded-lg bg-cyan-500/15 text-cyan-300 flex items-center justify-center font-bold mb-3">01</div>
+          <h3 class="font-bold text-white text-sm mb-1.5">LLM Prompt Rewriting (Translator)</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Kapag nag-type ka ng simpleng utos, hindi ito diretso sa image generator. Pinapaganda muna ito ng LLM (Gemini o ChatGPT) at dinadagdagan ng detalye tungkol sa ilaw, komposisyon, at kulay para walang makalimutang elemento.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-4 rounded-xl bg-[#080c17] border border-slate-800/90 hover:border-pink-500/50 transition">
+          <div class="w-9 h-9 rounded-lg bg-pink-500/15 text-pink-300 flex items-center justify-center font-bold mb-3">02</div>
+          <h3 class="font-bold text-white text-sm mb-1.5">Cross-Attention Mechanism</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Sa loob ng <strong>Diffusion Model</strong>, ikinokonekta ng Cross-Attention ang bawat salita sa eksaktong bahagi ng canvas. Kapag sinabi mong <em>"pulang sumbrero sa kaliwa"</em>, naka-lock lang ang pulang kulay sa bahaging iyon.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-4 rounded-xl bg-[#080c17] border border-slate-800/90 hover:border-violet-500/50 transition">
+          <div class="w-9 h-9 rounded-lg bg-violet-500/15 text-violet-300 flex items-center justify-center font-bold mb-3">03</div>
+          <h3 class="font-bold text-white text-sm mb-1.5">Latent Diffusion Denoising</h3>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Nagsisimula ang AI sa purong random static ("Gaussian Noise") at unti-unting nililinis ito sa loob ng 20–50 hakbang hanggang lumitaw ang malinaw na illustration, logo, o graphic design.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       MODAL 1: OPTIONAL GEMINI API KEY CONFIGURATION
+       ======================================================================== -->
+  <div id="apiModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0d1220] border border-cyan-500/40 rounded-2xl max-w-lg w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <span class="text-cyan-400">🔑</span> Connect Google Gemini Image API (Optional)
+        </h3>
+        <button type="button" class="close-modal-btn text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <p class="text-xs text-slate-400 leading-relaxed mb-4">
+        Gumagana ang studio na ito <strong>100% offline/built-in</strong> gamit ang Procedural Neural Illustration Engine. Kung mayroon kang sariling <strong>Google AI Studio API Key</strong>, maaari mo itong ilagay dito para gumamit ng live <code class="text-cyan-300">imagen-3.0-generate-002</code> cloud generation. (Naka-save lang ito sa iyong browser memory).
+      </p>
+      <div class="space-y-3">
+        <div>
+          <label for="geminiApiKeyInput" class="block text-xs font-semibold text-slate-300 mb-1">Gemini API Key</label>
+          <input id="geminiApiKeyInput" type="password" placeholder="AIzaSy..." class="w-full rounded-xl bg-[#06080f] border border-slate-700 focus:border-cyan-400 px-3.5 py-2.5 text-xs font-mono text-white outline-none" />
+        </div>
+        <div class="flex items-center justify-end gap-2 pt-2">
+          <button id="clearApiKeyBtn" type="button" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 cursor-pointer">
+            Use Offline Engine
+          </button>
+          <button id="saveApiKeyBtn" type="button" class="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-400 to-violet-500 text-slate-950 font-bold text-xs cursor-pointer">
+            Save & Enable Live API
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 2: EXPORT SPECS & DEVELOPER API CODE SNIPPET
+       ======================================================================== -->
+  <div id="specsModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0d1220] border border-violet-500/40 rounded-2xl max-w-2xl w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-base font-bold text-white">📋 Neural Pipeline Specs & API Payload</h3>
+        <button type="button" class="close-modal-btn text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <p class="text-xs text-slate-400 mb-3">
+        Narito ang structured JSON payload at expanded prompt na ginagamit ng engine para sa kasalukuyang illustration:
+      </p>
+      <pre id="specsCodeOutput" class="p-4 rounded-xl bg-[#06080f] border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto max-h-72"></pre>
+      <div class="flex items-center justify-between mt-4">
+        <span id="copyFeedback" class="text-xs text-emerald-400 font-mono"></span>
+        <div class="flex gap-2">
+          <button id="copySpecsBtn" type="button" class="px-4 py-2 rounded-xl bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/50 text-xs font-semibold text-cyan-200 cursor-pointer">
+            Copy JSON Specs
+          </button>
+          <button type="button" class="close-modal-btn px-4 py-2 rounded-xl bg-slate-800 text-xs text-slate-300 cursor-pointer">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       MODAL 3: EDUCATIONAL DEEP-DIVE ("PAANO ITO GUMAGANA?")
+       ======================================================================== -->
+  <div id="learnModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[#0d1220] border border-pink-500/40 rounded-2xl max-w-xl w-full p-6 shadow-2xl">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-base font-bold text-white">🎓 Text-to-Image AI Masterclass</h3>
+        <button type="button" class="close-modal-btn text-slate-400 hover:text-white cursor-pointer">✕</button>
+      </div>
+      <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
+        <p>
+          <strong class="text-cyan-300">1. Ano ang tawag sa tool na ito?</strong><br />
+          Ang tawag dito ay <strong>AI Text-to-Image Diffusion Model</strong> (hal. Google <em>Imagen 3</em> sa loob ng Gemini, at OpenAI <em>DALL-E 3 / GPT Image</em> sa loob ng ChatGPT).
+        </p>
+        <p>
+          <strong class="text-pink-300">2. Bakit nagiging eksakto sa sinabi mo?</strong><br />
+          Gumagamit ito ng <strong>Recaptioned Training Data</strong> at <strong>Cross-Attention Layers</strong>. Bawat salita sa prompt mo (kulay, posisyon, subject, at istilo) ay kino-convert sa mathematical vectors (embeddings) na nagdidikta kung saang pixel iguguhit ang bawat hugis.
+        </p>
+        <p>
+          <strong class="text-violet-300">3. Paano gamitin ang Studio na ito?</strong><br />
+          Mag-type lang ng kahit anong description sa kaliwa, pumili ng art style, at pindutin ang <em>Generate</em>. Pagkatapos, i-hover ang mga salita sa <strong>Cross-Attention Map</strong> sa kanan para makita kung paano binuo ng AI ang bawat layer!
+        </p>
+      </div>
+      <div class="mt-5 text-right">
+        <button type="button" class="close-modal-btn px-4 py-2 rounded-xl bg-gradient-to-r from-pink-500 to-violet-600 text-white font-bold text-xs cursor-pointer">
+          Subukan sa Studio
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Banner (Replaces alert()) -->
+  <div id="toastBanner" class="fixed bottom-5 right-5 z-50 hidden px-4 py-3 rounded-xl bg-[#0d1220] border border-cyan-400/70 text-xs font-medium text-cyan-200 shadow-2xl flex items-center gap-2">
+    <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+    <span id="toastMessage">Notification</span>
+  </div>
+
+  <!-- ========================================================================
+       EMBEDDED JAVASCRIPT: NEURAL ENGINE, DIFFUSION ANIMATOR & AUDIO SYNTH
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ----------------------------------------------------------------------
+         1. APPLICATION STATE
+         ---------------------------------------------------------------------- */
+      const state = {
+        prompt: 'Cyberpunk Jeepney in Manila at night with glowing neon lights',
+        style: 'cyberpunk',
+        aspect: '1:1',
+        palette: 'auto',
+        designTitle: 'MANILA 2099',
+        seed: 84920,
+        audioEnabled: true,
+        geminiApiKey: '',
+        isGenerating: false,
+        highlightedZone: null, // 'sky' | 'environment' | 'subject' | 'accent' | 'typography'
+        parsedTokens: [],
+        lastRenderData: null
+      };
+
+      /* ----------------------------------------------------------------------
+         2. DOM ELEMENT REFERENCES
+         ---------------------------------------------------------------------- */
+      const els = {
+        promptInput: document.getElementById('promptInput'),
+        charCount: document.getElementById('charCount'),
+        designTitleInput: document.getElementById('designTitleInput'),
+        paletteSelect: document.getElementById('paletteSelect'),
+        generateBtn: document.getElementById('generateBtn'),
+        rerollSeedBtn: document.getElementById('rerollSeedBtn'),
+        randomPromptBtn: document.getElementById('randomPromptBtn'),
+        brandTitleBtn: document.getElementById('brandTitleBtn'),
+        artCanvas: document.getElementById('artCanvas'),
+        apiResultImg: document.getElementById('apiResultImg'),
+        canvasAspectBadge: document.getElementById('canvasAspectBadge'),
+        seedDisplay: document.getElementById('seedDisplay'),
+        diffusionStageLabel: document.getElementById('diffusionStageLabel'),
+        diffusionPercent: document.getElementById('diffusionPercent'),
+        diffusionProgressBar: document.getElementById('diffusionProgressBar'),
+        step1Tag: document.getElementById('step1Tag'),
+        step2Tag: document.getElementById('step2Tag'),
+        step3Tag: document.getElementById('step3Tag'),
+        step4Tag: document.getElementById('step4Tag'),
+        rewrittenPromptBox: document.getElementById('rewrittenPromptBox'),
+        attentionTokensContainer: document.getElementById('attentionTokensContainer'),
+        attentionExplanation: document.getElementById('attentionExplanation'),
+        attentionOverlayBadge: document.getElementById('attentionOverlayBadge'),
+        attentionZoneName: document.getElementById('attentionZoneName'),
+        layerBreakdownList: document.getElementById('layerBreakdownList'),
+        downloadPngBtn: document.getElementById('downloadPngBtn'),
+        exportSpecsBtn: document.getElementById('exportSpecsBtn'),
+        audioToggleBtn: document.getElementById('audioToggleBtn'),
+        audioOnIcon: document.getElementById('audioOnIcon'),
+        audioOffIcon: document.getElementById('audioOffIcon'),
+        openApiModalBtn: document.getElementById('openApiModalBtn'),
+        openLearnModalBtn: document.getElementById('openLearnModalBtn'),
+        apiModal: document.getElementById('apiModal'),
+        specsModal: document.getElementById('specsModal'),
+        learnModal: document.getElementById('learnModal'),
+        geminiApiKeyInput: document.getElementById('geminiApiKeyInput'),
+        saveApiKeyBtn: document.getElementById('saveApiKeyBtn'),
+        clearApiKeyBtn: document.getElementById('clearApiKeyBtn'),
+        engineModeText: document.getElementById('engineModeText'),
+        specsCodeOutput: document.getElementById('specsCodeOutput'),
+        copySpecsBtn: document.getElementById('copySpecsBtn'),
+        copyFeedback: document.getElementById('copyFeedback'),
+        toastBanner: document.getElementById('toastBanner'),
+        toastMessage: document.getElementById('toastMessage')
+      };
+
+      const ctx = els.artCanvas.getContext('2d');
+
+      /* ----------------------------------------------------------------------
+         3. SUBTLE WEB AUDIO API SYNTH FEEDBACK
+         ---------------------------------------------------------------------- */
+      let audioCtx = null;
+
+      function playSynthTone(type = 'start') {
+        if (!state.audioEnabled) return;
+        try {
+          if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          }
+          if (audioCtx.state === 'suspended') {
+            audioCtx.resume();
+          }
+          const now = audioCtx.currentTime;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+
+          if (type === 'start') {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(320, now);
+            osc.frequency.exponentialRampToValueAtTime(640, now + 0.18);
+            gain.gain.setValueAtTime(0.05, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+          } else if (type === 'complete') {
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(523.25, now); // C5
+            osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+            osc.frequency.setValueAtTime(783.99, now + 0.16); // G5
+            gain.gain.setValueAtTime(0.06, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+          } else {
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(440, now);
+            gain.gain.setValueAtTime(0.025, now);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          }
+
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.36);
+        } catch (err) {
+          // Ignore audio errors if blocked by browser autoplay policy
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         4. DETERMINISTIC SEEDED PRNG (Mulberry32)
+         ---------------------------------------------------------------------- */
+      function createRng(seed) {
+        let a = seed >>> 0;
+        return function () {
+          a |= 0;
+          a = (a + 0x6D2B79F5) | 0;
+          let t = Math.imul(a ^ (a >>> 15), 1 | a);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+      }
+
+      /* ----------------------------------------------------------------------
+         5. SEMANTIC PROMPT PARSER & LLM PROMPT REWRITER
+         ---------------------------------------------------------------------- */
+      const SUBJECT_DICTIONARY = [
+        { keys: ['jeep', 'jeepney', 'car', 'vehicle', 'bus', 'train'], type: 'jeepney', label: 'Iconic Cyberpunk Jeepney' },
+        { keys: ['cat', 'pusa', 'neko', 'samurai', 'fox', 'wolf', 'dog', 'aso'], type: 'cat', label: 'Cyber-Samurai Feline Character' },
+        { keys: ['logo', 'diamond', 'geometric', 'icon', 'badge', 'emblem', 'brand'], type: 'logo', label: 'Symmetric Geometric Brand Emblem' },
+        { keys: ['island', 'isla', 'mountain', 'bundok', 'waterfall', 'temple', 'castle'], type: 'island', label: 'Floating Sanctuary Island' },
+        { keys: ['cafe', 'coffee', 'shop', 'house', 'building', 'city', 'manila', 'tower'], type: 'isometric_building', label: 'Architectural Isometric Structure' },
+        { keys: ['ship', 'spaceship', 'rocket', 'planet', 'astronaut', 'star', 'ufo'], type: 'spaceship', label: 'Interstellar Synthwave Vessel' },
+        { keys: ['robot', 'mech', 'cyborg', 'android', 'ai', 'girl', 'boy', 'warrior'], type: 'robot', label: 'Futuristic Cybernetic Guardian' }
+      ];
+
+      const PALETTES = {
+        cyber: { bg1: '#070b19', bg2: '#1a103c', primary: '#00f5d4', secondary: '#ff2a85', accent: '#8b5cf6', light: '#e0fbfc' },
+        sunset: { bg1: '#14091c', bg2: '#4a154b', primary: '#ff9e00', secondary: '#ff2a85', accent: '#00f5d4', light: '#fff3b0' },
+        emerald: { bg1: '#041412', bg2: '#0b2e29', primary: '#10b981', secondary: '#34d399', accent: '#f59e0b', light: '#d1fae5' },
+        royal: { bg1: '#0c081d', bg2: '#251452', primary: '#a855f7', secondary: '#fbbf24', accent: '#38bdf8', light: '#f3e8ff' },
+        mono: { bg1: '#09090b', bg2: '#27272a', primary: '#f4f4f5', secondary: '#a1a1aa', accent: '#00f5d4', light: '#ffffff' }
+      };
+
+      function analyzePrompt(rawPrompt, style, paletteOverride) {
+        const clean = rawPrompt.trim() || 'Futuristic Neon Illustration';
+        const lower = clean.toLowerCase();
+
+        // Detect Subject
+        let detectedSubject = { type: 'logo', label: 'Procedural Focal Sculpture' };
+        for (const item of SUBJECT_DICTIONARY) {
+          if (item.keys.some((k) => lower.includes(k))) {
+            detectedSubject = item;
+            break;
+          }
+        }
+        // Style overrides if user explicitly selects logo or isometric without specific subject
+        if (style === 'logo' && !lower.includes('cat') && !lower.includes('jeep')) {
+          detectedSubject = { type: 'logo', label: 'Minimalist Vector Brand Mark' };
+        }
+
+        // Detect Environment / Time of Day
+        const isNight = lower.includes('night') || lower.includes('gabi') || lower.includes('neon') || lower.includes('cyber') || style === 'cyberpunk' || style === 'pixel';
+        const hasWater = lower.includes('water') || lower.includes('waterfall') || lower.includes('sea') || lower.includes('dagat') || lower.includes('river');
+        const hasSakura = lower.includes('sakura') || lower.includes('cherry') || lower.includes('tree') || lower.includes('plant') || lower.includes('forest');
+        const hasMoonOrSun = lower.includes('moon') || lower.includes('buwan') || lower.includes('sun') || lower.includes('araw') || lower.includes('sunset');
+
+        // Detect Palette
+        let chosenPaletteKey = paletteOverride;
+        if (paletteOverride === 'auto') {
+          if (lower.includes('gold') || lower.includes('sun') || lower.includes('sunset') || lower.includes('amber')) {
+            chosenPaletteKey = 'sunset';
+          } else if (lower.includes('forest') || lower.includes('island') || lower.includes('emerald') || lower.includes('green') || lower.includes('plant')) {
+            chosenPaletteKey = 'emerald';
+          } else if (lower.includes('purple') || lower.includes('royal') || lower.includes('violet') || lower.includes('fantasy')) {
+            chosenPaletteKey = 'royal';
+          } else if (lower.includes('mono') || lower.includes('black and white') || lower.includes('minimal')) {
+            chosenPaletteKey = 'mono';
+          } else {
+            chosenPaletteKey = 'cyber';
+          }
+        }
+
+        const palette = PALETTES[chosenPaletteKey] || PALETTES.cyber;
+
+        // Build Expanded LLM Prompt (Simulating Gemini / ChatGPT Prompt Rewriter)
+        const styleDescriptions = {
+          cyberpunk: 'ultra-detailed cyberpunk digital illustration, volumetric neon rim lighting, rain-slicked reflections, high-contrast cyan and magenta atmosphere, 8k resolution',
+          vector: 'clean modern vector graphic illustration, crisp bezier curves, bold cel-shaded silhouettes, layered depth, Behance & Dribbble featured art style',
+          logo: 'minimalist geometric brand identity design, golden ratio symmetry, sleek gradient vectors, centered emblem composition on dark studio backdrop',
+          watercolor: 'expressive digital watercolor and ink illustration, soft pigment washes, textured cold-press paper grain, luminous atmospheric highlights',
+          isometric: '3D isometric architectural diorama illustration, clean orthographic perspective, soft global illumination, tactile miniature details',
+          pixel: 'nostalgic 16-bit pixel art illustration, crisp dithering, vibrant synthwave palette, classic arcade aesthetic'
+        };
+
+        const expandedPrompt = `A masterpiece ${styleDescriptions[style] || styleDescriptions.vector}, featuring ${detectedSubject.label.toLowerCase()} inspired by "${clean}". ${isNight ? 'Set against a deep twilight sky with luminous celestial glow and atmospheric bokeh.' : 'Illuminated by radiant studio key lighting and soft ambient gradients.'} ${hasWater ? 'Includes reflective liquid ripples and mist.' : ''} ${hasSakura ? 'Framed by stylized organic foliage and floating petals.' : ''} Balanced focal composition, crisp edges, zero visual artifacts.`;
+
+        // Tokenize for Interactive Cross-Attention Map
+        const stopWords = new Set(['in', 'at', 'the', 'a', 'an', 'with', 'and', 'of', 'on', 'over', 'under', 'sa', 'ng', 'na', 'ang', 'mga']);
+        const rawWords = clean.replace(/[^\w\s-]/g, '').split(/\s+/).filter(Boolean);
+        const tokens = rawWords.slice(0, 12).map((word) => {
+          const w = word.toLowerCase();
+          let zone = 'subject';
+          let zoneLabel = 'Center Focal Subject';
+          let weight = 0.92;
+
+          if (['night', 'gabi', 'sky', 'moon', 'buwan', 'sun', 'sunset', 'star', 'manila', 'city'].includes(w)) {
+            zone = 'sky';
+            zoneLabel = 'Upper Sky & Celestial Backdrop';
+            weight = 0.85;
+          } else if (['neon', 'glowing', 'lights', 'light', 'gold', 'cyan', 'purple', 'pink', 'sakura', 'waterfall', 'mountains', 'plants'].includes(w)) {
+            zone = 'accent';
+            zoneLabel = 'Lighting, Glows & Particle Accents';
+            weight = 0.88;
+          } else if (['street', 'road', 'island', 'floor', 'shop', 'ground', 'water'].includes(w)) {
+            zone = 'environment';
+            zoneLabel = 'Lower Horizon & Ground Plane';
+            weight = 0.81;
+          } else if (stopWords.has(w)) {
+            zone = 'environment';
+            zoneLabel = 'Spatial Context Connector';
+            weight = 0.34;
+          }
+
+          return { word, zone, zoneLabel, weight: weight.toFixed(2) };
+        });
+
+        // Add Typography token if present
+        if (state.designTitle.trim()) {
+          tokens.push({
+            word: `"${state.designTitle.trim()}"`,
+            zone: 'typography',
+            zoneLabel: 'Graphic Design Title Overlay',
+            weight: '0.98'
+          });
+        }
+
+        return {
+          clean,
+          detectedSubject,
+          isNight,
+          hasWater,
+          hasSakura,
+          hasMoonOrSun,
+          palette,
+          expandedPrompt,
+          tokens
+        };
+      }
+
+      /* ----------------------------------------------------------------------
+         6. PROCEDURAL NEURAL ILLUSTRATION & GRAPHIC DESIGN RENDERER
+         ---------------------------------------------------------------------- */
+      function getCanvasDimensions(aspect) {
+        if (aspect === '16:9') return { w: 1280, h: 720, label: '16:9 • 1280×720' };
+        if (aspect === '9:16') return { w: 720, h: 1280, label: '9:16 • 720×1280' };
+        return { w: 1024, h: 1024, label: '1:1 • 1024×1024' };
+      }
+
+      function renderIllustration(analysis, noiseAmount = 0) {
+        const dims = getCanvasDimensions(state.aspect);
+        if (els.artCanvas.width !== dims.w || els.artCanvas.height !== dims.h) {
+          els.artCanvas.width = dims.w;
+          els.artCanvas.height = dims.h;
+        }
+
+        const w = dims.w;
+        const h = dims.h;
+        const rng = createRng(state.seed);
+        const { palette, detectedSubject, isNight, hasWater, hasSakura } = analysis;
+        const style = state.style;
+
+        ctx.save();
+        ctx.clearRect(0, 0, w, h);
+
+        // --- LAYER 1: SKY & ATMOSPHERIC BACKGROUND ---
+        const bgGrad = ctx.createLinearGradient(0, 0, w * 0.3, h);
+        bgGrad.addColorStop(0, palette.bg1);
+        bgGrad.addColorStop(0.55, palette.bg2);
+        bgGrad.addColorStop(1, palette.bg1);
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, w, h);
+
+        // Celestial Orb (Moon / Sun / Hologram Halo)
+        const orbX = w * (0.25 + rng() * 0.5);
+        const orbY = h * (0.24 + rng() * 0.12);
+        const orbR = Math.min(w, h) * (style === 'logo' ? 0.28 : 0.17);
+
+        const orbGlow = ctx.createRadialGradient(orbX, orbY, orbR * 0.1, orbX, orbY, orbR * 2.4);
+        orbGlow.addColorStop(0, palette.primary + '66');
+        orbGlow.addColorStop(0.5, palette.secondary + '22');
+        orbGlow.addColorStop(1, 'transparent');
+        ctx.fillStyle = orbGlow;
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.beginPath();
+        ctx.arc(orbX, orbY, orbR, 0, Math.PI * 2);
+        const coreGrad = ctx.createLinearGradient(orbX, orbY - orbR, orbX, orbY + orbR);
+        coreGrad.addColorStop(0, palette.light);
+        coreGrad.addColorStop(1, palette.primary);
+        ctx.fillStyle = coreGrad;
+        ctx.fill();
+
+        // Retro Synthwave Stripes on Orb for Cyberpunk / Pixel
+        if (style === 'cyberpunk' || style === 'pixel') {
+          ctx.fillStyle = palette.bg2;
+          for (let i = 0; i < 5; i++) {
+            const stripeY = orbY + orbR * (0.15 + i * 0.16);
+            const stripeH = orbR * (0.03 + i * 0.015);
+            ctx.fillRect(orbX - orbR, stripeY, orbR * 2, stripeH);
+          }
+        }
+
+        // Stars / Bokeh Particles
+        const particleCount = style === 'logo' ? 18 : 55;
+        for (let i = 0; i < particleCount; i++) {
+          const px = rng() * w;
+          const py = rng() * h * 0.7;
+          const pr = (style === 'watercolor' ? 4 + rng() * 18 : 1 + rng() * 3.2);
+          ctx.beginPath();
+          ctx.arc(px, py, pr, 0, Math.PI * 2);
+          ctx.fillStyle = i % 2 === 0 ? palette.primary + '55' : palette.light + '44';
+          ctx.fill();
+        }
+
+        // --- LAYER 2: ENVIRONMENT & HORIZON ARCHITECTURE ---
+        const horizonY = h * 0.68;
+
+        if (style !== 'logo') {
+          // Distant Mountain / Skyline Silhouette
+          ctx.beginPath();
+          ctx.moveTo(0, horizonY);
+          const segments = 12;
+          for (let i = 0; i <= segments; i++) {
+            const sx = (w / segments) * i;
+            const sy = horizonY - (40 + rng() * (h * 0.18));
+            if (style === 'cyberpunk' || style === 'isometric') {
+              // City skyscrapers
+              const bWidth = w / segments;
+              const bHeight = 50 + rng() * (h * 0.24);
+              ctx.fillStyle = '#090d1c';
+              ctx.fillRect(sx, horizonY - bHeight, bWidth * 0.85, bHeight);
+              // Neon building windows
+              ctx.fillStyle = i % 2 === 0 ? palette.primary + '66' : palette.secondary + '66';
+              for (let wy = horizonY - bHeight + 14; wy < horizonY - 12; wy += 18) {
+                ctx.fillRect(sx + 8, wy, bWidth * 0.5, 4);
+              }
+            } else {
+              ctx.lineTo(sx, sy);
+            }
+          }
+          if (style !== 'cyberpunk' && style !== 'isometric') {
+            ctx.lineTo(w, horizonY);
+            ctx.closePath();
+            ctx.fillStyle = palette.bg1 + 'dd';
+            ctx.fill();
+          }
+
+          // Ground Plane / Cyber Grid / Water Reflection
+          const groundGrad = ctx.createLinearGradient(0, horizonY, 0, h);
+          groundGrad.addColorStop(0, palette.bg2);
+          groundGrad.addColorStop(1, '#04060c');
+          ctx.fillStyle = groundGrad;
+          ctx.fillRect(0, horizonY, w, h - horizonY);
+
+          // Perspective Grid Lines
+          ctx.strokeStyle = palette.primary + '44';
+          ctx.lineWidth = 2;
+          for (let g = 1; g <= 6; g++) {
+            const gy = horizonY + Math.pow(g / 6, 1.6) * (h - horizonY);
+            ctx.beginPath();
+            ctx.moveTo(0, gy);
+            ctx.lineTo(w, gy);
+            ctx.stroke();
+          }
+          for (let v = -6; v <= 6; v++) {
+            ctx.beginPath();
+            ctx.moveTo(w * 0.5 + v * 45, horizonY);
+            ctx.lineTo(w * 0.5 + v * 190, h);
+            ctx.stroke();
+          }
+        }
+
+        // --- LAYER 3: FOCAL ILLUSTRATION SUBJECT ---
+        const cx = w * 0.5;
+        const cy = style === 'logo' ? h * 0.47 : h * 0.56;
+        const scale = Math.min(w, h) / 1024;
+
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.scale(scale, scale);
+
+        // Subject Ambient Glow
+        const subGlow = ctx.createRadialGradient(0, 0, 20, 0, 0, 320);
+        subGlow.addColorStop(0, palette.secondary + '44');
+        subGlow.addColorStop(1, 'transparent');
+        ctx.fillStyle = subGlow;
+        ctx.beginPath();
+        ctx.arc(0, 0, 320, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (detectedSubject.type === 'jeepney') {
+          drawCyberJeepney(ctx, palette);
+        } else if (detectedSubject.type === 'cat') {
+          drawSamuraiCat(ctx, palette);
+        } else if (detectedSubject.type === 'island') {
+          drawFloatingIsland(ctx, palette);
+        } else if (detectedSubject.type === 'isometric_building') {
+          drawIsometricBuilding(ctx, palette);
+        } else if (detectedSubject.type === 'spaceship') {
+          drawSpaceship(ctx, palette);
+        } else if (detectedSubject.type === 'robot') {
+          drawCyberGuardian(ctx, palette);
+        } else {
+          drawGeometricLogo(ctx, palette);
+        }
+
+        ctx.restore();
+
+        // --- LAYER 4: STYLE-SPECIFIC POST-PROCESSING & ACCENTS ---
+        if (hasSakura || style === 'watercolor') {
+          for (let p = 0; p < 24; p++) {
+            const px = rng() * w;
+            const py = rng() * h;
+            ctx.save();
+            ctx.translate(px, py);
+            ctx.rotate(rng() * Math.PI);
+            ctx.fillStyle = palette.secondary + '88';
+            ctx.beginPath();
+            ctx.ellipse(0, 0, 9, 4.5, 0, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+          }
+        }
+
+        if (style === 'pixel') {
+          // Simulate crisp pixel grid overlay
+          ctx.fillStyle = 'rgba(0,0,0,0.18)';
+          for (let y = 0; y < h; y += 8) {
+            ctx.fillRect(0, y, w, 2);
+          }
+          for (let x = 0; x < w; x += 8) {
+            ctx.fillRect(x, 0, 2, h);
+          }
+        }
+
+        // --- LAYER 5: GRAPHIC DESIGN TYPOGRAPHY & FRAME OVERLAY ---
+        // Sleek Studio Frame Border
+        ctx.strokeStyle = palette.primary + '55';
+        ctx.lineWidth = 4;
+        ctx.strokeRect(24, 24, w - 48, h - 48);
+
+        // Corner Registration Marks
+        ctx.fillStyle = palette.secondary;
+        ctx.fillRect(20, 20, 14, 14);
+        ctx.fillRect(w - 34, 20, 14, 14);
+        ctx.fillRect(20, h - 34, 14, 14);
+        ctx.fillRect(w - 34, h - 34, 14, 14);
+
+        const titleText = state.designTitle.trim().toUpperCase();
+        if (titleText) {
+          const fontSize = Math.round(Math.min(w, h) * 0.058);
+          ctx.font = `800 ${fontSize}px "Inter", sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+
+          const textY = style === 'logo' ? h * 0.80 : h * 0.87;
+          const metrics = ctx.measureText(titleText);
+          const pillW = metrics.width + 64;
+          const pillH = fontSize + 28;
+
+          // Glassmorphic Title Badge
+          ctx.fillStyle = 'rgba(6, 8, 15, 0.78)';
+          roundRect(ctx, w / 2 - pillW / 2, textY - pillH / 2, pillW, pillH, 16);
+          ctx.fill();
+
+          ctx.strokeStyle = palette.primary;
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+
+          // Neon Text Glow
+          ctx.shadowColor = palette.primary;
+          ctx.shadowBlur = 18;
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(titleText, w / 2, textY + 2);
+          ctx.shadowBlur = 0;
+        }
+
+        // --- LAYER 6: DIFFUSION DENOISING SIMULATION OVERLAY ---
+        if (noiseAmount > 0) {
+          const step = Math.max(6, Math.round(noiseAmount * 24));
+          for (let ny = 0; ny < h; ny += step) {
+            for (let nx = 0; nx < w; nx += step) {
+              if (rng() < noiseAmount * 0.85) {
+                const pick = rng();
+                ctx.fillStyle =
+                  pick < 0.33
+                    ? palette.primary + 'aa'
+                    : pick < 0.66
+                    ? palette.secondary + 'aa'
+                    : '#090d18cc';
+                ctx.fillRect(nx, ny, step, step);
+              }
+            }
+          }
+        }
+
+        // --- LAYER 7: CROSS-ATTENTION BOUNDING BOX HIGHLIGHT ---
+        if (state.highlightedZone) {
+          drawAttentionHighlight(ctx, w, h, state.highlightedZone, palette);
+        }
+
+        ctx.restore();
+      }
+
+      /* ----------------------------------------------------------------------
+         7. SUBJECT VECTOR DRAWING PRIMITIVES
+         ---------------------------------------------------------------------- */
+      function roundRect(ctx, x, y, width, height, radius) {
+        ctx.beginPath();
+        ctx.moveTo(x + radius, y);
+        ctx.lineTo(x + width - radius, y);
+        ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+        ctx.lineTo(x + width, y + height - radius);
+        ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+        ctx.lineTo(x + radius, y + height);
+        ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+        ctx.lineTo(x, y + radius);
+        ctx.quadraticCurveTo(x, y, x + radius, y);
+        ctx.closePath();
+      }
+
+      function drawCyberJeepney(ctx, palette) {
+        // Futuristic Philippine Jeepney Silhouette
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 24;
+
+        // Main Chassis
+        ctx.fillStyle = '#111827';
+        ctx.strokeStyle = palette.primary;
+        ctx.lineWidth = 5;
+        roundRect(ctx, -230, -95, 460, 175, 24);
+        ctx.fill();
+        ctx.stroke();
+
+        // Extended Front Hood (Jeepney Nose)
+        roundRect(ctx, 160, -25, 115, 105, 18);
+        ctx.fill();
+        ctx.stroke();
+
+        // Roof Rack & Neon Signboard
+        ctx.fillStyle = palette.secondary;
+        roundRect(ctx, -210, -120, 410, 22, 10);
+        ctx.fill();
+
+        // Passenger Windows (Glowing Cyan)
+        ctx.fillStyle = palette.primary + 'cc';
+        for (let wx = -195; wx <= 65; wx += 68) {
+          roundRect(ctx, wx, -68, 52, 46, 8);
+          ctx.fill();
+        }
+
+        // Decorative Pinoy Chrome & Neon Stripes
+        ctx.strokeStyle = palette.secondary;
+        ctx.lineWidth = 6;
+        ctx.beginPath();
+        ctx.moveTo(-220, 12);
+        ctx.lineTo(265, 12);
+        ctx.stroke();
+
+        ctx.strokeStyle = palette.accent;
+        ctx.beginPath();
+        ctx.moveTo(-220, 34);
+        ctx.lineTo(265, 34);
+        ctx.stroke();
+
+        // Headlight Beam
+        const beam = ctx.createLinearGradient(275, 20, 440, 50);
+        beam.addColorStop(0, palette.light + 'cc');
+        beam.addColorStop(1, 'transparent');
+        ctx.fillStyle = beam;
+        ctx.beginPath();
+        ctx.moveTo(275, 10);
+        ctx.lineTo(440, -30);
+        ctx.lineTo(440, 85);
+        ctx.lineTo(275, 45);
+        ctx.closePath();
+        ctx.fill();
+
+        // Hover / Neon Wheels
+        [-140, 145].forEach((wheelX) => {
+          ctx.beginPath();
+          ctx.arc(wheelX, 85, 46, 0, Math.PI * 2);
+          ctx.fillStyle = '#05070e';
+          ctx.fill();
+          ctx.lineWidth = 6;
+          ctx.strokeStyle = palette.secondary;
+          ctx.stroke();
+
+          ctx.beginPath();
+          ctx.arc(wheelX, 85, 22, 0, Math.PI * 2);
+          ctx.strokeStyle = palette.primary;
+          ctx.stroke();
+        });
+        ctx.shadowBlur = 0;
+      }
+
+      function drawSamuraiCat(ctx, palette) {
+        ctx.shadowColor = palette.secondary;
+        ctx.shadowBlur = 22;
+
+        // Katana Blade Behind
+        ctx.save();
+        ctx.rotate(-0.42);
+        ctx.fillStyle = palette.light;
+        roundRect(ctx, -290, -10, 580, 14, 6);
+        ctx.fill();
+        ctx.fillStyle = palette.secondary;
+        ctx.fillRect(-195, -24, 16, 42);
+        ctx.restore();
+
+        // Cloak / Armor Shoulders
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = palette.primary;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(-165, 180);
+        ctx.quadraticCurveTo(0, 40, 165, 180);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Cat Head
+        ctx.beginPath();
+        ctx.arc(0, -25, 115, 0, Math.PI * 2);
+        ctx.fillStyle = '#111827';
+        ctx.fill();
+        ctx.stroke();
+
+        // Left & Right Pointed Ears
+        [[-105, -75, -135, -195, -35, -125], [105, -75, 135, -195, 35, -125]].forEach((pts) => {
+          ctx.beginPath();
+          ctx.moveTo(pts[0], pts[1]);
+          ctx.lineTo(pts[2], pts[3]);
+          ctx.lineTo(pts[4], pts[5]);
+          ctx.closePath();
+          ctx.fillStyle = '#111827';
+          ctx.fill();
+          ctx.strokeStyle = palette.secondary;
+          ctx.stroke();
+        });
+
+        // Kabuto Crest (Crescent Horn)
+        ctx.beginPath();
+        ctx.arc(0, -135, 58, 0.15 * Math.PI, 0.85 * Math.PI, false);
+        ctx.strokeStyle = palette.secondary;
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        // Glowing Cyber Visor Eyes
+        ctx.fillStyle = palette.primary;
+        roundRect(ctx, -78, -42, 62, 24, 10);
+        ctx.fill();
+        roundRect(ctx, 16, -42, 62, 24, 10);
+        ctx.fill();
+
+        ctx.shadowBlur = 0;
+      }
+
+      function drawFloatingIsland(ctx, palette) {
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 20;
+
+        // Inverted Rock Cone
+        ctx.beginPath();
+        ctx.moveTo(-220, -20);
+        ctx.lineTo(220, -20);
+        ctx.lineTo(45, 220);
+        ctx.lineTo(-35, 195);
+        ctx.closePath();
+        const rockGrad = ctx.createLinearGradient(0, -20, 0, 220);
+        rockGrad.addColorStop(0, '#1e293b');
+        rockGrad.addColorStop(1, '#090d18');
+        ctx.fillStyle = rockGrad;
+        ctx.fill();
+        ctx.strokeStyle = palette.primary;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Lush Top Terrace
+        ctx.fillStyle = palette.primary;
+        roundRect(ctx, -230, -38, 460, 28, 14);
+        ctx.fill();
+
+        // Glowing Waterfall Cascade
+        const wfGrad = ctx.createLinearGradient(60, -20, 60, 250);
+        wfGrad.addColorStop(0, palette.light);
+        wfGrad.addColorStop(0.6, palette.primary + 'cc');
+        wfGrad.addColorStop(1, 'transparent');
+        ctx.fillStyle = wfGrad;
+        ctx.fillRect(55, -20, 48, 260);
+
+        // Crystal Sanctuary Spire
+        ctx.beginPath();
+        ctx.moveTo(-60, -38);
+        ctx.lineTo(0, -195);
+        ctx.lineTo(60, -38);
+        ctx.closePath();
+        ctx.fillStyle = palette.secondary + 'cc';
+        ctx.fill();
+        ctx.strokeStyle = palette.light;
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+      }
+
+      function drawIsometricBuilding(ctx, palette) {
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 20;
+
+        // Isometric Cube Base
+        // Left Face
+        ctx.beginPath();
+        ctx.moveTo(0, -40);
+        ctx.lineTo(-190, -135);
+        ctx.lineTo(-190, 95);
+        ctx.lineTo(0, 190);
+        ctx.closePath();
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = palette.primary;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        // Right Face
+        ctx.beginPath();
+        ctx.moveTo(0, -40);
+        ctx.lineTo(190, -135);
+        ctx.lineTo(190, 95);
+        ctx.lineTo(0, 190);
+        ctx.closePath();
+        ctx.fillStyle = '#1e1b4b';
+        ctx.fill();
+        ctx.strokeStyle = palette.secondary;
+        ctx.stroke();
+
+        // Roof Face
+        ctx.beginPath();
+        ctx.moveTo(0, -230);
+        ctx.lineTo(190, -135);
+        ctx.lineTo(0, -40);
+        ctx.lineTo(-190, -135);
+        ctx.closePath();
+        ctx.fillStyle = '#172554';
+        ctx.fill();
+        ctx.strokeStyle = palette.light;
+        ctx.stroke();
+
+        // Holographic Neon Sign on Roof
+        ctx.fillStyle = palette.secondary;
+        roundRect(ctx, -75, -185, 150, 44, 12);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '800 22px "JetBrains Mono", monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText('STUDIO', 0, -156);
+
+        ctx.shadowBlur = 0;
+      }
+
+      function drawSpaceship(ctx, palette) {
+        ctx.save();
+        ctx.rotate(-0.35);
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 25;
+
+        // Thruster Flame
+        const flame = ctx.createLinearGradient(-150, 0, -340, 0);
+        flame.addColorStop(0, palette.light);
+        flame.addColorStop(0.4, palette.secondary);
+        flame.addColorStop(1, 'transparent');
+        ctx.fillStyle = flame;
+        ctx.beginPath();
+        ctx.moveTo(-140, -35);
+        ctx.lineTo(-340, 0);
+        ctx.lineTo(-140, 35);
+        ctx.closePath();
+        ctx.fill();
+
+        // Wings
+        ctx.fillStyle = '#1e1b4b';
+        ctx.strokeStyle = palette.secondary;
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(-40, 0);
+        ctx.lineTo(-150, -155);
+        ctx.lineTo(40, -30);
+        ctx.lineTo(40, 30);
+        ctx.lineTo(-150, 155);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Fuselage
+        ctx.beginPath();
+        ctx.moveTo(230, 0);
+        ctx.quadraticCurveTo(60, -75, -155, -45);
+        ctx.lineTo(-155, 45);
+        ctx.quadraticCurveTo(60, 75, 230, 0);
+        ctx.closePath();
+        ctx.fillStyle = '#0f172a';
+        ctx.fill();
+        ctx.strokeStyle = palette.primary;
+        ctx.stroke();
+
+        // Cockpit Canopy
+        ctx.fillStyle = palette.primary;
+        ctx.beginPath();
+        ctx.ellipse(55, 0, 65, 24, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.restore();
+      }
+
+      function drawCyberGuardian(ctx, palette) {
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 22;
+
+        // Halo Ring
+        ctx.beginPath();
+        ctx.arc(0, -45, 165, 0, Math.PI * 2);
+        ctx.strokeStyle = palette.secondary + '88';
+        ctx.lineWidth = 6;
+        ctx.stroke();
+
+        // Helmet Silhouette
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = palette.primary;
+        ctx.lineWidth = 5;
+        roundRect(ctx, -95, -145, 190, 210, 65);
+        ctx.fill();
+        ctx.stroke();
+
+        // Visor Bar
+        ctx.fillStyle = palette.primary;
+        roundRect(ctx, -75, -65, 150, 36, 14);
+        ctx.fill();
+
+        // Chest Armor
+        ctx.beginPath();
+        ctx.moveTo(-155, 185);
+        ctx.lineTo(-110, 80);
+        ctx.lineTo(110, 80);
+        ctx.lineTo(155, 185);
+        ctx.closePath();
+        ctx.fillStyle = '#111827';
+        ctx.fill();
+        ctx.strokeStyle = palette.secondary;
+        ctx.stroke();
+
+        // Arc Core
+        ctx.beginPath();
+        ctx.arc(0, 132, 26, 0, Math.PI * 2);
+        ctx.fillStyle = palette.light;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      function drawGeometricLogo(ctx, palette) {
+        ctx.shadowColor = palette.primary;
+        ctx.shadowBlur = 28;
+
+        // Outer Hexagon Ring
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i - Math.PI / 2;
+          const x = Math.cos(angle) * 210;
+          const y = Math.sin(angle) * 210;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fillStyle = 'rgba(13, 18, 32, 0.85)';
+        ctx.fill();
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = palette.primary;
+        ctx.stroke();
+
+        // Inner Interlocking Diamonds
+        ctx.beginPath();
+        ctx.moveTo(0, -155);
+        ctx.lineTo(135, 0);
+        ctx.lineTo(0, 155);
+        ctx.lineTo(-135, 0);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(-135, -155, 135, 155);
+        grad.addColorStop(0, palette.primary);
+        grad.addColorStop(0.5, palette.accent);
+        grad.addColorStop(1, palette.secondary);
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Center Cutout Core
+        ctx.beginPath();
+        ctx.moveTo(0, -68);
+        ctx.lineTo(68, 0);
+        ctx.lineTo(0, 68);
+        ctx.lineTo(-68, 0);
+        ctx.closePath();
+        ctx.fillStyle = '#06080f';
+        ctx.fill();
+        ctx.strokeStyle = palette.light;
+        ctx.lineWidth = 4;
+        ctx.stroke();
+
+        ctx.shadowBlur = 0;
+      }
+
+      /* ----------------------------------------------------------------------
+         8. CROSS-ATTENTION VISUAL OVERLAY ON CANVAS
+         ---------------------------------------------------------------------- */
+      function drawAttentionHighlight(ctx, w, h, zone, palette) {
+        let box = { x: w * 0.2, y: h * 0.25, bw: w * 0.6, bh: h * 0.5, label: 'Focal Subject' };
+
+        if (zone === 'sky') {
+          box = { x: 36, y: 36, bw: w - 72, bh: h * 0.38, label: 'Sky & Celestial Attention Map' };
+        } else if (zone === 'environment') {
+          box = { x: 36, y: h * 0.62, bw: w - 72, bh: h * 0.32, label: 'Horizon & Ground Attention Map' };
+        } else if (zone === 'accent') {
+          box = { x: w * 0.14, y: h * 0.16, bw: w * 0.72, bh: h * 0.64, label: 'Lighting & Particle Attention Map' };
+        } else if (zone === 'typography') {
+          box = { x: w * 0.18, y: h * 0.76, bw: w * 0.64, bh: h * 0.17, label: 'Typography Design Layer' };
+        }
+
+        ctx.save();
+        ctx.fillStyle = palette.primary + '1f';
+        ctx.fillRect(box.x, box.y, box.bw, box.bh);
+
+        ctx.setLineDash([12, 8]);
+        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#00f5d4';
+        ctx.strokeRect(box.x, box.y, box.bw, box.bh);
+        ctx.setLineDash([]);
+
+        // Label Tag
+        ctx.fillStyle = '#00f5d4';
+        ctx.fillRect(box.x, box.y - 32, Math.min(box.bw, 360), 32);
+        ctx.fillStyle = '#05070e';
+        ctx.font = '700 15px "JetBrains Mono", monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText(`🎯 ${box.label}`, box.x + 12, box.y - 11);
+        ctx.restore();
+      }
+
+      /* ----------------------------------------------------------------------
+         9. DIFFUSION ANIMATION LOOP & PIPELINE UI UPDATES
+         ---------------------------------------------------------------------- */
+      function updatePipelineUI(analysis) {
+        state.lastRenderData = analysis;
+        state.parsedTokens = analysis.tokens;
+
+        // 1. Update Rewritten Prompt Box
+        els.rewrittenPromptBox.textContent = analysis.expandedPrompt;
+
+        // 2. Render Interactive Cross-Attention Tokens
+        els.attentionTokensContainer.innerHTML = '';
+        analysis.tokens.forEach((tok) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'attention-token text-slate-200';
+          btn.innerHTML = `<span>${tok.word}</span><span class="text-[10px] text-cyan-400">${tok.weight}</span>`;
+
+          const activateZone = () => {
+            state.highlightedZone = tok.zone;
+            els.attentionZoneName.textContent = `${tok.word} → ${tok.zoneLabel} (weight: ${tok.weight})`;
+            els.attentionOverlayBadge.classList.remove('hidden');
+            els.attentionExplanation.innerHTML = `<strong class="text-cyan-300">"${tok.word}"</strong> maps to <strong class="text-white">${tok.zoneLabel}</strong> with cross-attention weight <code class="text-pink-400">${tok.weight}</code>.`;
+            renderIllustration(analysis, 0);
+          };
+
+          const clearZone = () => {
+            state.highlightedZone = null;
+            els.attentionOverlayBadge.classList.add('hidden');
+            renderIllustration(analysis, 0);
+          };
+
+          btn.addEventListener('mouseenter', activateZone);
+          btn.addEventListener('mouseleave', clearZone);
+          btn.addEventListener('click', () => {
+            playSynthTone('click');
+            if (state.highlightedZone === tok.zone) {
+              clearZone();
+            } else {
+              activateZone();
+            }
+          });
+
+          els.attentionTokensContainer.appendChild(btn);
+        });
+
+        // 3. Spatial Layer Decomposition List
+        const layers = [
+          { name: 'Layer 04: Typography & Frame', detail: state.designTitle.trim() || 'Clean Studio Border', color: 'text-pink-300' },
+          { name: 'Layer 03: Focal Subject', detail: analysis.detectedSubject.label, color: 'text-cyan-300' },
+          { name: 'Layer 02: Environment Plane', detail: analysis.isNight ? 'Illuminated Horizon Grid' : 'Atmospheric Horizon', color: 'text-violet-300' },
+          { name: 'Layer 01: Sky & Celestial Glow', detail: `${state.style.toUpperCase()} Palette`, color: 'text-emerald-300' }
+        ];
+
+        els.layerBreakdownList.innerHTML = layers
+          .map(
+            (l) => `
+            <li class="p-2 rounded-lg bg-[#070a13] border border-slate-800/80 flex flex-col">
+              <span class="${l.color} font-semibold text-[11px]">${l.name}</span>
+              <span class="text-slate-400 text-[10px]">${l.detail}</span>
+            </li>`
+          )
+          .join('');
+      }
+
+      async function triggerGeneration() {
+        if (state.isGenerating) return;
+        state.isGenerating = true;
+        state.prompt = els.promptInput.value;
+        state.designTitle = els.designTitleInput.value;
+        state.palette = els.paletteSelect.value;
+
+        const dims = getCanvasDimensions(state.aspect);
+        els.canvasAspectBadge.textContent = dims.label;
+        els.seedDisplay.textContent = `SEED #${state.seed}`;
+
+        playSynthTone('start');
+
+        const analysis = analyzePrompt(state.prompt, state.style, state.palette);
+        updatePipelineUI(analysis);
+
+        // Hide previous API image if switching back to procedural canvas
+        els.apiResultImg.classList.add('hidden');
+        els.artCanvas.classList.remove('hidden');
+
+        // Check if user connected an optional Gemini API Key
+        if (state.geminiApiKey) {
+          await generateWithGeminiApi(analysis);
+          state.isGenerating = false;
+          return;
+        }
+
+        // Run 4-Stage Visual Diffusion Denoising Animation
+        const stages = [
+          { pct: 25, noise: 0.85, label: 'Stage 1/4: Initializing Gaussian Latent Noise...', step: 1 },
+          { pct: 55, noise: 0.50, label: 'Stage 2/4: Cross-Attention Spatial Layout...', step: 2 },
+          { pct: 82, noise: 0.22, label: 'Stage 3/4: Applying Lighting, Color & Style...', step: 3 },
+          { pct: 100, noise: 0.0, label: 'Stage 4/4: Final Illustration & Design Rendered', step: 4 }
+        ];
+
+        for (const s of stages) {
+          els.diffusionStageLabel.textContent = s.label;
+          els.diffusionPercent.textContent = `${s.pct}%`;
+          els.diffusionProgressBar.style.width = `${s.pct}%`;
+          updateStepTags(s.step);
+          renderIllustration(analysis, s.noise);
+          await new Promise((r) => setTimeout(r, 170));
+        }
+
+        playSynthTone('complete');
+        state.isGenerating = false;
+      }
+
+      function updateStepTags(activeStep) {
+        const tags = [els.step1Tag, els.step2Tag, els.step3Tag, els.step4Tag];
+        tags.forEach((tag, idx) => {
+          if (idx + 1 <= activeStep) {
+            tag.classList.remove('text-slate-500');
+            tag.classList.add('text-cyan-300', 'font-semibold');
+          } else {
+            tag.classList.add('text-slate-500');
+            tag.classList.remove('text-cyan-300', 'font-semibold');
+          }
+        });
+      }
+
+      /* ----------------------------------------------------------------------
+         10. OPTIONAL LIVE GEMINI IMAGEN 3 API INTEGRATION
+         ---------------------------------------------------------------------- */
+      async function generateWithGeminiApi(analysis) {
+        els.diffusionStageLabel.textContent = 'Calling Google Imagen 3 API...';
+        els.diffusionPercent.textContent = '50%';
+        els.diffusionProgressBar.style.width = '50%';
+        updateStepTags(2);
+
+        try {
+          const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${encodeURIComponent(state.geminiApiKey)}`;
+          const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              instances: [{ prompt: analysis.expandedPrompt }],
+              parameters: {
+                sampleCount: 1,
+                aspectRatio: state.aspect
+              }
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`API returned status ${response.status}`);
+          }
+
+          const data = await response.json();
+          const base64 = data?.predictions?.[0]?.bytesBase64Encoded;
+          if (!base64) {
+            throw new Error('No image bytes returned from Gemini API.');
+          }
+
+          els.apiResultImg.src = `data:image/png;base64,${base64}`;
+          els.artCanvas.classList.add('hidden');
+          els.apiResultImg.classList.remove('hidden');
+
+          els.diffusionStageLabel.textContent = 'Stage 4/4: Cloud Imagen 3 Render Complete';
+          els.diffusionPercent.textContent = '100%';
+          els.diffusionProgressBar.style.width = '100%';
+          updateStepTags(4);
+          playSynthTone('complete');
+          showToast('Generated via Google Imagen 3 API!');
+        } catch (err) {
+          showToast('API Error—falling back to Offline Neural Engine.');
+          renderIllustration(analysis, 0);
+          els.diffusionStageLabel.textContent = 'Fallback: Offline Neural Render Complete';
+          els.diffusionPercent.textContent = '100%';
+          els.diffusionProgressBar.style.width = '100%';
+          updateStepTags(4);
+        }
+      }
+
+      /* ----------------------------------------------------------------------
+         11. UI HELPERS & EVENT LISTENERS
+         ---------------------------------------------------------------------- */
+      function showToast(msg) {
+        els.toastMessage.textContent = msg;
+        els.toastBanner.classList.remove('hidden');
+        clearTimeout(showToast._timer);
+        showToast._timer = setTimeout(() => {
+          els.toastBanner.classList.add('hidden');
+        }, 3200);
+      }
+
+      // Prompt character counter
+      els.promptInput.addEventListener('input', () => {
+        els.charCount.textContent = `${els.promptInput.value.length} chars`;
+      });
+
+      // Style chips selection
+      document.querySelectorAll('.style-chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          document.querySelectorAll('.style-chip').forEach((c) => c.classList.remove('active'));
+          chip.classList.add('active');
+          state.style = chip.dataset.style;
+          triggerGeneration();
+        });
+      });
+
+      // Aspect ratio buttons
+      document.querySelectorAll('.aspect-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.aspect-btn').forEach((b) => {
+            b.classList.remove('active', 'border-cyan-400', 'bg-cyan-500/20', 'text-white');
+            b.classList.add('border-slate-700', 'bg-slate-900', 'text-slate-300');
+          });
+          btn.classList.add('active', 'border-cyan-400', 'bg-cyan-500/20', 'text-white');
+          btn.classList.remove('border-slate-700', 'bg-slate-900', 'text-slate-300');
+          state.aspect = btn.dataset.aspect;
+          triggerGeneration();
+        });
+      });
+
+      // Quick Presets
+      document.querySelectorAll('.preset-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          els.promptInput.value = btn.dataset.prompt;
+          els.charCount.textContent = `${btn.dataset.prompt.length} chars`;
+          els.designTitleInput.value = btn.dataset.title || '';
+          state.style = btn.dataset.style || 'cyberpunk';
+
+          document.querySelectorAll('.style-chip').forEach((c) => {
+            c.classList.toggle('active', c.dataset.style === state.style);
+          });
+
+          state.seed = Math.floor(10000 + Math.random() * 89999);
+          triggerGeneration();
+        });
+      });
+
+      // Random Inspiration Button & Title Click
+      const INSPIRATIONS = [
+        { prompt: 'Cyberpunk Jeepney in Manila at night with glowing neon lights', style: 'cyberpunk', title: 'MANILA 2099' },
+        { prompt: 'Neon Samurai Cat with katana under sakura moon', style: 'vector', title: 'NEKO RONIN' },
+        { prompt: 'Minimalist Geometric Diamond Logo with gold and cyan gradients', style: 'logo', title: 'AETHER STUDIO' },
+        { prompt: 'Fantasy Floating Island with waterfall and glowing crystal temple', style: 'watercolor', title: 'SKY SANCTUARY' },
+        { prompt: 'Isometric Futuristic Coffee Shop with holographic menu and plants', style: 'isometric', title: 'CYBER CAFE' },
+        { prompt: 'Retro Pixel Art Spaceship flying over purple synthwave mountains', style: 'pixel', title: 'STAR DRIVE' },
+        { prompt: 'Futuristic Cyber Guardian Robot protecting glowing emerald city', style: 'cyberpunk', title: 'AEGIS V' }
+      ];
+
+      function pickRandomInspiration() {
+        const pick = INSPIRATIONS[Math.floor(Math.random() * INSPIRATIONS.length)];
+        els.promptInput.value = pick.prompt;
+        els.charCount.textContent = `${pick.prompt.length} chars`;
+        els.designTitleInput.value = pick.title;
+        state.style = pick.style;
+        document.querySelectorAll('.style-chip').forEach((c) => {
+          c.classList.toggle('active', c.dataset.style === state.style);
+        });
+        state.seed = Math.floor(10000 + Math.random() * 89999);
+        triggerGeneration();
+      }
+
+      els.randomPromptBtn.addEventListener('click', pickRandomInspiration);
+      els.brandTitleBtn.addEventListener('click', pickRandomInspiration);
+
+      // Generate & Re-roll Seed
+      els.generateBtn.addEventListener('click', () => {
+        state.seed = Math.floor(10000 + Math.random() * 89999);
+        triggerGeneration();
+      });
+
+      els.rerollSeedBtn.addEventListener('click', () => {
+        state.seed = Math.floor(10000 + Math.random() * 89999);
+        triggerGeneration();
+      });
+
+      // Download PNG
+      els.downloadPngBtn.addEventListener('click', () => {
+        const link = document.createElement('a');
+        const slug = (state.designTitle || 'ai-illustration').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        link.download = `${slug}-${state.seed}.png`;
+
+        if (!els.apiResultImg.classList.contains('hidden') && els.apiResultImg.src) {
+          link.href = els.apiResultImg.src;
+        } else {
+          link.href = els.artCanvas.toDataURL('image/png');
+        }
+        link.click();
+        playSynthTone('complete');
+        showToast('Illustration downloaded as PNG!');
+      });
+
+      // Audio Mute Toggle
+      els.audioToggleBtn.addEventListener('click', () => {
+        state.audioEnabled = !state.audioEnabled;
+        els.audioOnIcon.classList.toggle('hidden', !state.audioEnabled);
+        els.audioOffIcon.classList.toggle('hidden', state.audioEnabled);
+        showToast(state.audioEnabled ? 'Audio synth feedback enabled' : 'Audio muted');
+      });
+
+      // Modals Management
+      els.openApiModalBtn.addEventListener('click', () => els.apiModal.classList.remove('hidden'));
+      els.openLearnModalBtn.addEventListener('click', () => els.learnModal.classList.remove('hidden'));
+
+      els.exportSpecsBtn.addEventListener('click', () => {
+        const payload = {
+          studio: 'My AI Text To Illustration and Design',
+          model: state.geminiApiKey ? 'imagen-3.0-generate-002' : 'procedural-neural-canvas-v3',
+          userPrompt: state.prompt,
+          rewrittenPrompt: state.lastRenderData?.expandedPrompt || '',
+          style: state.style,
+          aspectRatio: state.aspect,
+          seed: state.seed,
+          crossAttentionTokens: state.parsedTokens
+        };
+        els.specsCodeOutput.textContent = JSON.stringify(payload, null, 2);
+        els.copyFeedback.textContent = '';
+        els.specsModal.classList.remove('hidden');
+      });
+
+      els.copySpecsBtn.addEventListener('click', () => {
+        const tempArea = document.createElement('textarea');
+        tempArea.value = els.specsCodeOutput.textContent;
+        document.body.appendChild(tempArea);
+        tempArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempArea);
+        els.copyFeedback.textContent = '✓ Copied to clipboard!';
+      });
+
+      els.saveApiKeyBtn.addEventListener('click', () => {
+        const key = els.geminiApiKeyInput.value.trim();
+        if (!key) {
+          showToast('Please enter a valid Gemini API key or click Use Offline Engine.');
+          return;
+        }
+        state.geminiApiKey = key;
+        els.engineModeText.textContent = 'Google Imagen 3 API Connected';
+        els.apiModal.classList.add('hidden');
+        showToast('Gemini API Key connected! Ready for live generation.');
+      });
+
+      els.clearApiKeyBtn.addEventListener('click', () => {
+        state.geminiApiKey = '';
+        els.geminiApiKeyInput.value = '';
+        els.engineModeText.textContent = 'Offline Neural Engine v3.0';
+        els.apiModal.classList.add('hidden');
+        showToast('Switched to Offline Neural Engine.');
+      });
+
+      document.querySelectorAll('.close-modal-btn').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          els.apiModal.classList.add('hidden');
+          els.specsModal.classList.add('hidden');
+          els.learnModal.classList.add('hidden');
+        });
+      });
+
+      // Initialize on window load
+      window.addEventListener('load', () => {
+        triggerGeneration();
+      });
+    })();
+  </script>
+</body>
+</html>
